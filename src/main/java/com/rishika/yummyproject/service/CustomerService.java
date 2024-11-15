@@ -1,5 +1,6 @@
 package com.rishika.yummyproject.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.rishika.yummyproject.dto.CustomerRequest;
 import com.rishika.yummyproject.dto.CustomerResponse;
 
@@ -69,5 +70,41 @@ public class CustomerService implements UserDetailsService {
         Customer customer = repo.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Customer not found with email: " + username));
         return new CustomUserDetails(customer); // Wrapping Customer in CustomUserDetails
+    }
+    public String updateCustomer(JsonNode requestBody) {
+        String email = requestBody.get("email").asText();
+        Customer existingCustomer = getCustomer(email);
+
+        if (existingCustomer == null) {
+            throw new CustomerNotFoundException("Customer not found");
+        }
+
+        // Update fields if they exist in the request
+        if (requestBody.has("firstName")) {
+            existingCustomer.setFirstName(requestBody.get("firstName").asText());
+        }
+        if (requestBody.has("lastName")) {
+            existingCustomer.setLastName(requestBody.get("lastName").asText());
+        }
+//        if (requestBody.has("password")) {
+//            existingCustomer.setPassword(passwordEncoder.encode(requestBody.get("password").asText()));
+//            existingCustomer.setPass(requestBody.get("password").asText());
+//            logger.debug("New Password set {}", existingCustomer.getPass());
+//        }
+
+        repo.save(existingCustomer);
+        return "Customer updated successfully";
+    }
+
+    public String deleteCustomer(String email) {
+        Customer existingCustomer = getCustomer(email);
+        logger.debug("Loading user details for deletion: {}", existingCustomer);
+        if (existingCustomer == null) {
+            throw new CustomerNotFoundException("Customer not found");
+        }
+
+        // Delete the customer from the repository
+        repo.delete(existingCustomer);
+        return "Deleted Succesfully";
     }
 }
