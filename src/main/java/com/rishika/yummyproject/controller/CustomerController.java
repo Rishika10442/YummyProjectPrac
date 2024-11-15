@@ -1,14 +1,12 @@
 package com.rishika.yummyproject.controller;
 
 import com.rishika.yummyproject.dto.CustomerRequest;
+import com.rishika.yummyproject.dto.CustomerResponse;
 import com.rishika.yummyproject.service.CustomerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -20,5 +18,11 @@ public class CustomerController {
     @PostMapping
     public ResponseEntity<String> createCustoemr(@RequestBody @Valid CustomerRequest request) {
         return ResponseEntity.ok(customerService.createCustomer(request));
+    }
+
+
+    @GetMapping("/{email}")
+    public ResponseEntity<CustomerResponse> getCustomer(@PathVariable("email") String email) {
+        return ResponseEntity.ok(customerService.retrieveCustomer(email));
     }
 }

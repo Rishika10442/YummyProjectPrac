@@ -1,6 +1,7 @@
 package com.rishika.yummyproject.helper;
 
 
+import com.rishika.yummyproject.filter.JWTFilter;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -10,10 +11,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Component
 public class JWTHelper {
     private String SECRET_KEY = "cr666N7wIV+KJ2xOQpWtcfAekL4YXd9gbnJMs8SJ9sI=";
+    private static final Logger logger = LoggerFactory.getLogger(JWTFilter.class);
 
     // Extract username from the token
     public String extractUsername(String token) {
@@ -57,8 +61,9 @@ public class JWTHelper {
     // Validate token
     public Boolean validateToken(String token, String username) {
         final String extractedUsername = extractUsername(token);
-//        return (extractedUsername.equals(username) && !isTokenExpired(token));
-        return !isTokenExpired(token);
+        logger.debug("Validating token for username: {}", username);
+       return (extractedUsername.equals(username) && !isTokenExpired(token));
+        //return !isTokenExpired(token);
     }
 }
 
