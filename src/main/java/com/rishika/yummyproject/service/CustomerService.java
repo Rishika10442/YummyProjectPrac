@@ -12,14 +12,12 @@ import com.rishika.yummyproject.helper.CustomUserDetails;
 import com.rishika.yummyproject.helper.JWTHelper;
 import com.rishika.yummyproject.mapper.CustomerMapper;
 import com.rishika.yummyproject.repo.CustomerRepo;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import static java.lang.String.format;
 import org.slf4j.Logger;
@@ -96,7 +94,7 @@ public class CustomerService implements UserDetailsService {
         return "Customer updated successfully";
     }
 
-    public String deleteCustomer(String email) {
+    public void deleteCustomer(String email) {
         Customer existingCustomer = getCustomer(email);
         logger.debug("Loading user details for deletion: {}", existingCustomer);
         if (existingCustomer == null) {
@@ -105,6 +103,5 @@ public class CustomerService implements UserDetailsService {
 
         // Delete the customer from the repository
         repo.delete(existingCustomer);
-        return "Deleted Succesfully";
     }
 }
