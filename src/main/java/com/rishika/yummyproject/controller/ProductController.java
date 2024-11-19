@@ -33,4 +33,16 @@ public class ProductController {
         List<Product> products = productService.getTop2ProductsInPriceRange(minPrice, maxPrice);
         return ResponseEntity.ok(products);
     }
+
+    @PutMapping
+    public ResponseEntity<String> updateCustomer(@RequestBody JsonNode requestBody) {
+        return ResponseEntity.ok(productService.updateProduct(requestBody));
+    }
+    @DeleteMapping("/{name}")
+    public ResponseEntity<String> deleteProduct(@PathVariable("name") String name) {
+
+        productService.deleteProduct(name);
+        return ResponseEntity.ok("Customer account deleted successfully");
+
+    }
 }
