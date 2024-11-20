@@ -35,7 +35,7 @@ public class ProductController {
     }
 
     @PutMapping
-    public ResponseEntity<String> updateCustomer(@RequestBody JsonNode requestBody) {
+    public ResponseEntity<String> updateProduct(@RequestBody JsonNode requestBody) {
         return ResponseEntity.ok(productService.updateProduct(requestBody));
     }
     @DeleteMapping("/{name}")
